@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cardcontainer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 70%;
+            border: 2px solid yellow;
+        }
+        .cardcontainer div {
+            border: 2px solid red;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 0;
+            height: auto;
+        }
+        .cardcontainer img {
+            width: 100%;
+            height: auto;
+        }
+        .cardcontainer p {
+            margin-bottom: 0;
+        }
+        .cardcontainer h1 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cardcontainer" id="product-list">
+        <!-- Products will be dynamically generated here -->
+    </div>
+    <select id="category" onchange="filterCategory()">
+        <option value="select category">select category</option>
+        <option value="Alpha Array">Alpha Array</option>
+        <option value="Lace-Up">Lace-Up</option>
+        <option value="VOXATI">VOXATI</option>
+        <option value="Vincent Chase">Vincent Chase</option>
+    </select>
+
+    <script>
+        let products = [
+            {
+                img: './jeans.jpg',
+                brand: 'Alpha Array',
+                description: 'Alpha Array Comfort Slim Fit Jeans for Men',
+                price: 1999
+            },
+            {
+                img: './sneakers.jpg',
+                brand: 'Lace-Up',
+                description: 'Campus OG-D4 White Sneakers for Men | Trendy Casual Sneaker Shoes',
+                price: 2000
+            },
+            {
+                img: './jacket.jpg',
+                brand: 'VOXATI',
+                description: 'VOXATI Men\'s Denim Short Length Jacket',
+                price: 2300
+            },
+            {
+                img: './specs.jpg',
+                brand: 'Vincent Chase',
+                description: 'Vincent Chase By Lenskart | Full Rim Square Branded Sunglasses',
+                price: 390
+            }
+        ];
+
+        // Array to store added cart items
+        let AddcartArr = JSON.parse(localStorage.getItem("cartList")) || [];// in AddcartArr values are stored from addProducts() function
+
+        // Function to display all the products before selecting category whenever we call this on filteredProducts that means on this array collection of objects which matches the category
+        function addProducts(productArray) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = ''; // Clear existing products
+
+            productArray.forEach((product, index) => {
+                const productDiv = document.createElement('div');//at a time creating 4 divs and giving different class name using productDiv.className = `card_product${index + 1}`; here ${inside this whatever the value it get converted in to string}
+                productDiv.className = `card_product${index + 1}`;
+                productDiv.innerHTML = `
+                    <img src="${product.img}" />
+                    <h1>${product.brand}</h1>
+                    <p>${product.description}</p>
+                    <p id="price">${product.price}</p>
+                    <button onclick="addToCart(${index})">Add to cart</button> 
+                `;//above are the creating elements and giving its content using ${} in above button addTocart(0)i.e idex od object in array on which it got clicked it calls addTocart function.
+                productList.appendChild(productDiv);
+            });
+        }
+
+        // Initial rendering of all products
+        addProducts(products);//to display all the products before selecting category
+// this function is used to add products to cart by re-assigning the objects which are added to cart to product object and again re-assigned them to cartObj
+        function addToCart(index) {
+            event.preventDefault();
+            let product = products[index];//products is an array in that at index objects values is re-assigning to cartObj
+            let cartObj = {
+                prodimg: product.img,
+                brand: product.brand,
+                proddes: product.description,
+                prodprice: product.price,
+                quantity: 1
+            };
+
+            let existingProductIndex = AddcartArr.findIndex(item => item.brand === cartObj.brand);
+
+            if (existingProductIndex !== -1) {
+                AddcartArr[existingProductIndex].quantity += 1;
+            } else {
+                AddcartArr.push(cartObj);
+            }
+
+            localStorage.setItem("cartList", JSON.stringify(AddcartArr));
+            window.location.href = "cart.html";
+        }
+
+        function filterCategory() {
+            let selectedValue = document.querySelector("#category").value;
+            let filteredProducts = products.filter(product => product.brand === selectedValue || selectedValue === 'select category');
+            addProducts(filteredProducts);
+        }
+    </script>
+</body>
+</html>

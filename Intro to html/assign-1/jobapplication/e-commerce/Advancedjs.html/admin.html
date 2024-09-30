@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form">
+    
+    Name:
+    <input type="text"id="name">
+    <select id="category">
+        <option value="Womenswear">Womenswear</option>
+        <option value="Menswear">Menswear</option> 
+    <option value="Acessories">Acessories</option>   </select>
+    <label>image Url</label>
+    <input id="image">
+    Price:
+    <input type="text" id="price">
+    <select id="gender">
+        <option value="select gender">select gender</option>
+        <option value="male">male</option>
+        <option value="female">female</option>
+
+    </select>
+    sold:
+    <select id="status">
+        <option value="false">not sold</option>
+        <option value="true">sold</option>
+        </select>
+        <input type="submit" id="submit1" value="Add"/>
+
+    </form>
+</body>
+</html>
+<script>
+document.querySelector("#form").addEventListener("submit",myfun);
+    let prodArrlocalstore;//we created array to store the listed productes
+    if(localStorage.getItem("prodlist")!==null){
+        prodArrlocalstore =JSON.parse(localStorage.getItem("prodlist"));
+    }
+    else{
+        prodArrlocalstore =[];
+    }
+
+    function myfun(){
+        event.preventDefault();
+    const name=document.querySelector("#name").value;
+    const category=document.querySelector("#category").value;
+    const image=document.querySelector("#image").value;
+    const price =document.querySelector("#price").value;
+    const gender =document.querySelector("#gender").value;
+
+    const status=document.querySelector("#status").value
+
+   
+   let prodobj=new prodconstfn( name,category,image,price,gender,status);
+
+   prodArrlocalstore.push(prodobj);
+   
+   localStorage.setItem("prodlist",JSON.stringify(prodArrlocalstore));
+    
+    }
+    function prodconstfn(Name,Category,ImgUrl,Price,Gender,Status){
+        this.name=Name//in object the properties will store in the form of "name" as key name not "Name" 
+        this.category=Category
+        this.image=ImgUrl
+        this.price=Price
+        this.gender=Gender
+        this.status=Status
+    }
+   
+
+
+</script>

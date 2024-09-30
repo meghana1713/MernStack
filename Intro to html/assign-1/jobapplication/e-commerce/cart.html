@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Cards</title>
+    <style>
+        body{
+          border: 2px solid purple;
+        }
+        .cardcontainer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 70%;
+            border: 2px solid yellow;
+            margin: 20px auto;
+            position: absolute;
+            left: 0px;
+            top:0px;
+        }
+
+        .card_products {
+            grid-column: span 4;
+        }
+
+        .product_card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .product_card img {
+            max-width: 100%;
+            height: 200px;
+            border-radius: 5px;
+        }
+
+        .QuantCont {
+            display: flex;
+            justify-content: space-around;
+            width: 50%;
+            margin: 10px auto;
+        }
+
+        .totalDisplay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-top: 20px;
+            font-size: 16px;
+            border: 2px solid black;
+        }
+        .totalDisplay label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .promo-section {
+            text-align: center;
+            margin: 20px;
+       margin-left: 0px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="cardcontainer">
+        <div class="card_products"></div>
+    </div>
+
+    <div class="totalDisplay">
+        <label>Total Items: <span id="totalItems">0</span></label>
+        <label>Price: $<span id="totalPrice">0.00</span></label>
+        <div class="promo-section">
+            <input type="text" id="promoCode" placeholder="Enter promo code">
+            <button id="applyPromo">Apply Promo</button>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Fetch AddcartArr data from localStorage
+        const AddcartArr = JSON.parse(localStorage.getItem("cartList")) || [];
+
+        // Initialize product data
+        AddcartArr.forEach((element, index) => {
+            // Create a container for each product
+            let productCard = document.createElement("div");
+            productCard.className = "product_card";
+
+            // Create and append the image
+            let img = document.createElement("img");
+            img.src = element.prodimg;
+            img.alt = element.prodtittle;
+            productCard.appendChild(img);
+
+            // Create and append the title
+            let h1 = document.createElement("h1");
+            h1.textContent = element.prodtittle;
+            productCard.appendChild(h1);
+
+            // Create and append the description
+            let para = document.createElement("p");
+            para.textContent = element.proddes;
+            productCard.appendChild(para);
+
+            // Create and append the price
+            let para2 = document.createElement("p");
+            para2.textContent = `$${parseFloat(element.prodprice).toFixed(2)}`;
+            productCard.appendChild(para2);
+
+            // Create quantity container
+            let quantity_Container = document.createElement("div");
+            quantity_Container.className = "QuantCont";
+
+            let quantity_Inc = document.createElement("button");
+            quantity_Inc.className = "inc";
+            quantity_Inc.innerText = "+";
+
+            let quantity_Value = document.createElement("input");
+            quantity_Value.type = "number";
+            quantity_Value.value = element.quantity || 1;
+            quantity_Value.dataset.index = index; // Track index
+
+            let quantity_Dec = document.createElement("button");
+            quantity_Dec.className = "dec";
+            quantity_Dec.innerText = "-";
+
+            quantity_Container.appendChild(quantity_Inc);
+            quantity_Container.appendChild(quantity_Value);
+            quantity_Container.appendChild(quantity_Dec);
+            let deleteCard = document.createElement("button");
+            deleteCard.innerText = "Delete";
+            productCard.appendChild(quantity_Container);
+            productCard.appendChild(deleteCard);
+
+            // Append the product card to the container
+            document.querySelector(".card_products").appendChild(productCard);
+
+            // Event listeners to update total and price
+            quantity_Inc.addEventListener("click", function () {
+                let index = quantity_Value.dataset.index;
+                quantity_Value.value = parseInt(quantity_Value.value) + 1;
+                AddcartArr[index].quantity = parseInt(quantity_Value.value);
+                updateTotals();
+            });
+
+            quantity_Dec.addEventListener("click", function () {
+                let index = quantity_Value.dataset.index;
+                if (quantity_Value.value > 1) {
+                    quantity_Value.value = parseInt(quantity_Value.value) - 1;
+                    AddcartArr[index].quantity = parseInt(quantity_Value.value);
+                    updateTotals();
+                }
+            });
+
+            deleteCard.addEventListener("click", function () {
+                deleteProduct(index);
+            });
+        });
+
+        function updateTotals() {
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            AddcartArr.forEach((element) => {
+                let quantity = parseInt(element.quantity) || 1; // Default to 1 if undefined
+                let price = parseFloat(element.prodprice);
+                totalItems += quantity;
+                totalPrice += quantity * price;
+            });
+
+            document.getElementById("totalItems").textContent = totalItems;
+            document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);
+        }
+
+        function deleteProduct(index) {
+            // Delete the item from the array
+            AddcartArr.splice(index, 1);
+            // Update localStorage
+            localStorage.setItem("cartList", JSON.stringify(AddcartArr));
+            // Reload to reflect changes
+            window.location.reload();
+        }
+
+        document.getElementById("applyPromo").addEventListener("click", function () {
+            const promoCode = document.getElementById("promoCode").value;
+            if (promoCode === "flmi30") {
+                let currentTotal = parseFloat(document.getElementById("totalPrice").textContent);
+                let discount = (30 / 100) * currentTotal;
+                let discountedTotal = currentTotal - discount;
+                document.getElementById("totalPrice").textContent = discountedTotal.toFixed(2);
+            }
+        });
+
+        // Initial update
+        updateTotals();
+    </script>
+</body>
+</html>
+
+

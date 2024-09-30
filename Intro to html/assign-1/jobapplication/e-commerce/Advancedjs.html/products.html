@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .product_card{
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+let prodArrlocalstore=JSON.parse(localStorage.getItem("cartList")) || [];
+prodArrlocalstore.forEach((element,index)=>{
+    let productCard = document.createElement("div");
+    productCard.className = "product_card";
+   
+
+    let prodname=document.createElement("input");
+    prodname.value=element.name
+    let prodcat=document.createElement("select");
+    let categories = ["Womenswear", "Menswear", "Accessories"];
+    categories.forEach(cat => {
+        let catOption = document.createElement("option");
+        catOption.value = cat;
+        catOption.innerHTML = cat;//to display in dropdown list
+        if (cat === element.category) {
+            catOption.selected = true;
+        }
+        prodcat.appendChild(catOption);
+    });
+    let prodimg=document.createElement("img");
+    prodimg.src = element.image;
+    let prodprice=document.createElement("input");
+    prodprice.value=element.price;
+    let prodgen=document.createElement("select");
+    let genders = ["male", "female"];
+    genders.forEach(gen => {
+        let genOption = document.createElement("option");
+        genOption.value = gen;
+        genOption.innerHTML = gen;
+        if (gen === element.gender) {
+            genOption.selected = true;
+        }
+        prodgen.appendChild(genOption);
+    });
+    let prodstatus=document.createElement("select");
+    let statuses = ["false", "true"];
+    statuses.forEach(stat => {
+        let statOption = document.createElement("option");
+        statOption.value = stat;
+        statOption.innerHTML = stat === "true" ? "sold" : "not sold";
+        if (stat === element.status) {
+            statOption.selected = true;
+        }
+        prodstatus.appendChild(statOption);
+    });
+
+
+productCard.append(prodname,prodcat,prodimg,prodprice,prodgen,prodstatus);
+document.querySelector("body").append(productCard);
+  
+})
+</script>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    let promise1=new Promise((reslove,reject)=>{  /*in promise1 it returns value of reslove here it is success*/
+        setTimeout(function (){
+            reject("not1");
+        },200);
+    });
+    let promise2= new Promise((reslove,reject)=>{  /*in promise1 it returns value of reslove here it is success*/
+        setTimeout(function (){
+            reslove("success2");
+        },300);
+    });
+    let promise3= new Promise((reslove,reject)=>{  /*in promise1 it returns value of reslove here it is success*/
+        setTimeout(function (){
+            reject("not done");
+        },300);
+    });
+ 
+    promiseArr=[promise1,promise2,promise3];
+    let combinedpromise=Promise.race(promiseArr);
+    combinedpromise.then((res)=>{
+        console.log(res);
+    })
+    .catch((res)=>{
+        console.log(res);
+ 
+    });
+</script>

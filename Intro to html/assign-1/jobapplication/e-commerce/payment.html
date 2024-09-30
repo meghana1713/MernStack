@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+</head>
+<body>
+    <form id="payform">
+        <input type="text" placeholder="Enter name" required />
+        <input id="cardno" type="number" placeholder="Enter card number" required />
+        <input id="cvvno" type="number" placeholder="Enter CVV" required />
+        <input id="expdate" type="date" required />
+        <input type="button" value="Submit" id="submitBtn" />
+    </form>
+
+    <script>
+        const validcardnumber = "123456789";
+        const validcvv = "123";
+        const validexpdate = "2025-04-08"; // Valid date in YYYY-MM-DD format
+
+        document.getElementById("submitBtn").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            let cname = document.querySelector('[type="text"]').value;
+            let cardnumber = document.getElementById("cardno").value;
+            let cvv = document.getElementById("cvvno").value;
+            let expdateInput = document.getElementById("expdate").value; // Input date in YYYY-MM-DD format
+
+            console.log("Entered Expiry Date: " + expdateInput); // Debugging to check the entered date
+
+            if (cardnumber != validcardnumber && cvv !=validcvv && expdateInput != validexpdate) {
+                alert("Enter valid data");
+
+            } else {
+                                            window.location.href = "otp.html";
+            }
+        });
+    </script>
+</body>
+</html>
+

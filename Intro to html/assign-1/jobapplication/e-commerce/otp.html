@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="otp">
+        <input id="otpvalue" type="number" placeholder="enter otp here"/>
+        <input type="submit"  value="verify"/>
+    </form>
+</body>
+</html>
+<script>
+    let validotp="1234";
+    document.querySelector("#otp").addEventListener("submit",function(){
+     event.preventDefault();
+    let enteredotp=document.querySelector("#otpvalue").value;
+    if(enteredotp!==validotp){
+     alert("enter valid otp");
+    }
+else{
+    alert("payement successfull");
+}
+    });
+</script>

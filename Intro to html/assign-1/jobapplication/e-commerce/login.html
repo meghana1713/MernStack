@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form1">
+        <input type="text" id="Username" placeholder="enter username"/>
+        <input type="password" id="Password"  placeholder="enter password"/>
+        <input type="submit" id="submit1" value="submit"/>
+    </form>
+
+</body>
+</html>
+<script>
+    document.querySelector("#form1").addEventListener("submit", compfun);
+
+    function compfun(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        // Retrieve stored credentials
+        let credentialsArr = JSON.parse(localStorage.getItem("credentialList")) || [];
+        let userN = document.querySelector("#Username").value;
+        let pass = document.querySelector("#Password").value;
+
+        // Variable to track if login is successful
+        let isLoginSuccessful = false;
+
+        // Check if entered credentials match any in the stored credential list
+        credentialsArr.forEach(function(element) {
+            if (userN.toLowerCase() === element.username.toLowerCase() && pass === element.password) {
+                isLoginSuccessful = true; // Set flag if credentials match
+            }
+        });
+
+        // Redirect based on the login success status
+        if (isLoginSuccessful) {
+            // Set authenticated status
+            localStorage.setItem('authenticated', 'true');
+            alert("Login successful! Redirecting to the men's page...");
+            window.location.href = "mens.html"; // Redirect to men's page
+        } else {
+            alert("Invalid credentials. Please sign up if you don't have an account.");
+            window.location.href = "signup.html"; // Redirect to signup page
+        }
+    }
+</script>

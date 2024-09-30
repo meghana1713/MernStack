@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+function getDatafun() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve("Data from API"), 1000); // Resolve after 1 second
+  });
+}
+
+// Simulating data processing
+function processData(data) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(`Processed ${data}`), 1000); // Resolve after 1 second
+  });
+}
+
+// Simulating saving data
+function saveData(data) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => reject(`unSaved ${data}`), 1000); // Resolve after 1 second
+  });
+}
+async function fun1(){
+    try{
+    let res1= await getDatafun();
+    console.log(res1);
+
+    let res2= await processData(res1);
+    console.log(res2);
+
+    let res3= await saveData(res2);
+    console.log(res3);//as thr result in saveData() function is rejected even thoght it is called in try block as it got reject it is handled in catch block if multiple rejects then the reject  value will be in error variable and print multiple lines for multiple rejects
+
+    }
+    catch(error){//for all promises if we keep one catch it handles only the first encountered reject that is the reason we use try catch for every promises
+        console.log('not done'+error)
+    }
+    
+};
+fun1();
+</script>

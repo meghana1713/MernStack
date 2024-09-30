@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: teal;
+        }
+        .navbar > div {
+            color: white;
+        }
+        #tabs {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            width: 60%;
+        }
+        #title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div id="title">Reebok</div>
+        <div id="tabs">
+            <h1>Men</h1>
+            <h1>Women</h1>
+            <h1>Login</h1>
+            <h1>SignUp</h1>
+        </div>
+    </nav>
+    <a href="./signup.html">SignUp</a>
+    <a href="./login.html">Login</a>
+    <a href="mens.html" id="mensproducts">Mens</a>
+    <a href="womens.html" id="womensproducts">Womens</a>
+
+    <script>
+        // Function to check if the user is authenticated
+        function isAuthenticated() {
+            return localStorage.getItem('authenticated') === 'true';
+        }
+
+        // Function to check authentication and control navigation
+        function checkAuthentication(elementId) {
+            event.preventDefault();
+            if (!isAuthenticated()) {//it is used when user directly selecting mens or womens tab without login it checks authenticated key values is true or not in localstorage if that key doesnot exist in local storage that indicates it is false
+                alert('You need to be logged in to view this page.');
+                window.location.href = 'login.html';
+            } 
+            else {
+                // Redirect to the corresponding page
+                if (elementId === "mensproducts") {
+                    window.location.href = 'mens.html';
+                } else if (elementId === "womensproducts") {
+                    window.location.href = 'womens.html';
+                }
+            }
+        }
+
+        // Attach click event listeners without using `event`
+        document.querySelector("#mensproducts").addEventListener("click", function() {//if we function parameters oin this line only it directly calls the function it wont wait to click the button by the user
+            checkAuthentication("mensproducts");
+        });
+
+        document.querySelector("#womensproducts").addEventListener("click", function() {
+            checkAuthentication("womensproducts");
+        });
+    </script>
+</body>
+</html>

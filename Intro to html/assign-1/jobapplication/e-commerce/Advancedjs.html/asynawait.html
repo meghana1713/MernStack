@@ -1,0 +1,29 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ </head>
+ <body>
+    
+ </body>
+ </html>
+ <script>
+    async function exfun() {
+        let promise1=new Promise((resolve,reject)=>
+    {
+        setTimeout(()=>{
+            resolve("working");
+        },200);
+       
+    })
+    let res= await promise1;//wait keyoword is only used in side the function not inside the promise or any block of code.
+//alert(res);
+//console.log(res);
+return res;// as async function reurns a promise promise is and object it contains  promisestate its value is fullfilled and  promise value here its value is working
+        
+    };
+   let output=exfun();
+console.log(output);
+ </script>
